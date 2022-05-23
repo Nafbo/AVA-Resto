@@ -55,7 +55,7 @@ def analysis_prix(df):
     return(df2['prix'].value_counts().plot(kind='pie'))
 
 
-def avis_quartie(df):
+def avis_quartier(df):
     x_quartier = df['quartier'].unique()
     note_quartier = sorted((df['NOTE_VALEUR'])
                         .unique())
