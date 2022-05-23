@@ -18,8 +18,11 @@ from src.analysis.analysis import analysis_prix, analysis_quartier, analysis_typ
 df = pd.read_csv('./src/analysis/LePetitFute.csv')
 df1 = set_up(df)
 
-liste_quartier = df1['quartier'].unique()
+liste_quartier = df1['quartier'].sort_values().unique()
+
 # print(liste_quartier[:-1])
+
+
 
 # ------- APP -----------------------------------------------------------
 
@@ -37,17 +40,18 @@ app.layout= dbc.Container([    #dbc.Container mieux que html.div pour bootstrap
 
     dbc.Row([   #divise la page en 3 ligne : le titres / dropdown / derniers bar chart
         html.H1("Quel est le meilleur restaurant de Paris")], 
-        className="text-center"), 
+        className="text-center mb-3"), 
 
     dbc.Row([
         dbc.Col([
             dbc.Card([
 
                 dbc.CardHeader([
+                    html.H4("Nombre de resaurants par quartier"),
                     dcc.Dropdown(id='dropdown_quartier', 
                         multi=True, 
-                        value=liste_quartier[1],
-                        options=[liste_quartier],
+                        value=liste_quartier[0],
+                        options=liste_quartier,
                     )
                 ]),
 
@@ -56,9 +60,30 @@ app.layout= dbc.Container([    #dbc.Container mieux que html.div pour bootstrap
                 ]),
             
             ],className='card border-primary mb-3'),
-        ])
+        ], width=5),
+
+        dbc.Col([
+            
+            dbc.Card([
+
+                dbc.CardHeader([
+                    html.H4("Nombre de resaurants par quartier"),
+                    dcc.Dropdown(id='dropdown', 
+                        multi=True, 
+                        value=liste_quartier[0],
+                        options=liste_quartier,
+                    )
+                ]),
+
+                dbc.CardBody([
+                    dcc.Graph(id='pie', figure={})
+                ]),
+            
+            ],className='card border-primary mb-3'),
+
+        ], width = 5, )
         
-    ], ),
+    ],justify="around" ),
 
     
 
@@ -92,8 +117,9 @@ app.layout= dbc.Container([    #dbc.Container mieux que html.div pour bootstrap
     Input('dropdown_quartier', 'value')
 )
 def update_graph(value_slctd):
-    df1_slct = df1[df1['quartier'].isin(value_slctd)]
-    figln2 = px.pie(df1_slct, names='quartier', values=df1['quartier'][(df1['quartier'] != '69005') & (df1['quartier'] != 'None')].value_counts(), color='Name', hover_name='Name', hole=.4)
+    df_quartier = analysis_quartier(df1)
+    df1_slct = df_quartier[df_quartier['Quartier'].isin(value_slctd)]
+    figln2 = px.bar(df1_slct, x='Quartier', y="Nbre_Resto_Quartiers")
     return figln2
 
 

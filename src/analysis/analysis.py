@@ -49,9 +49,10 @@ def analysis_quartier(df):
     b=[]
     for i in a:
         b.append(i)
-    df_quartier = pd.DataFrame(list(zip(c,b)), columns = ['Quartier','Nbre_Resto_Quartiers'])
+    df_q = pd.DataFrame(list(zip(c,b)), columns = ['Quartier','Nbre_Resto_Quartiers'])
+    df_quartier = df_q[(df_q['Quartier'] != '69005') & (df_q['Quatier'] != 'None')]
     
-    return(df_quartier[(df_quartier['Quartier'] != '69005') & (df_quartier['Quartier'] != 'None')].plot(kind='pie'))
+    return df_quartier
 
 
 def analysis_type(df):
