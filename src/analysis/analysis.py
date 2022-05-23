@@ -50,8 +50,8 @@ def analysis_quartier(df):
     for i in range(len(df['quartier'].value_counts())-1):
         a.append(df['quartier'].value_counts()[i])
         b.append(df['quartier'].value_counts().index[i])
-    df_quartier = pd.DataFrame({"Quartier" : a, 
-                                "Valeur_Quartier": b})
+    df_quartier = pd.DataFrame({"Quartier" : b, 
+                                "Valeur_Quartier": a})
     return(df_quartier)
 
 
@@ -61,8 +61,8 @@ def analysis_type(df):
     for i in range(len(df['type'].value_counts())-1):
         a.append(df['type'].value_counts()[i])
         b.append(df['type'].value_counts().index[i])
-    df_quartier = pd.DataFrame({"Type" : a, 
-                                "Valeur_Type": b})
+    df_quartier = pd.DataFrame({"Type" : b, 
+                                "Valeur_Type": a})
     return(df_quartier)
 
 
@@ -72,8 +72,8 @@ def analysis_prix(df):
     for i in range(len(df['prix'].value_counts())-1):
         a.append(df['prix'].value_counts()[i])
         b.append(df['prix'].value_counts().index[i])
-    df_prix = pd.DataFrame({"Prix" : a, 
-                                "Valeur_Prix": b})
+    df_prix = pd.DataFrame({"Prix" : b, 
+                                "Valeur_Prix": a})
     return(df_prix)
 
 
