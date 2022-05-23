@@ -9,21 +9,28 @@ import pandas as pd
 import base64
 import plotly.graph_objs as go
 from dash import Dash, dash_table
-
-
 from src.analysis.analysis import analysis_prix, analysis_quartier, analysis_type, set_up
+
+
 # ------- INITIALISATION DATA --------------------------------------------------------
 
 df = pd.read_csv('./src/analysis/LePetitFute.csv')
 df1 = set_up(df)
 
-# print(liste_quartier[:-1])
+#Pour les quartiers et le nombre de restos dans ces quartiers 
 
 df_quartier = analysis_quartier(df)
-print(df_quartier)
-
 liste_quartier = df_quartier['Quartier'].sort_values().unique()
 
+#Pour le type de restos au total
+
+df_type = analysis_type(df)
+type_quartier=df_type['Type'].sort_values().unique()
+
+#Pour le nombre de restaurants en fonction des prix
+
+df_prix = analysis_prix(df)
+prix_quartier=df_prix['Prix'].sort_values().unique()
 
 # ------- APP -----------------------------------------------------------
 
@@ -48,10 +55,10 @@ app.layout= dbc.Container([    #dbc.Container mieux que html.div pour bootstrap
             dbc.Card([
 
                 dbc.CardHeader([
-                    html.H4("Nombre de resaurants par quartier"),
+                    html.H4("Nombre de restaurants par quartier"),
                     dcc.Dropdown(id='dropdown_quartier', 
                         multi=True, 
-                        value=liste_quartier[0],
+                        value=liste_quartier,
                         options=liste_quartier,
                     )
                 ]),
@@ -68,11 +75,11 @@ app.layout= dbc.Container([    #dbc.Container mieux que html.div pour bootstrap
             dbc.Card([
 
                 dbc.CardHeader([
-                    html.H4("Nombre de restaurants par quartier"),
-                    dcc.Dropdown(id='dropdown', 
+                    html.H4("Total de restaurants par type"),
+                    dcc.Dropdown(id='dropdown_type', 
                         multi=True, 
-                        value=liste_quartier[0],
-                        options=liste_quartier,
+                        value=type_quartier[1],
+                        options=type_quartier,
                     )
                 ]),
 
@@ -80,7 +87,28 @@ app.layout= dbc.Container([    #dbc.Container mieux que html.div pour bootstrap
                     dcc.Graph(id='pie', figure={})
                 ]),
             
-            ],className='card border-primary mb-3'),
+            ],className='card border-success mb-3'),
+
+        ], width = 5, ),
+        
+        dbc.Col([
+            
+            dbc.Card([
+
+                dbc.CardHeader([
+                    html.H4("Total de restaurants par prix"),
+                    dcc.Dropdown(id='dropdown_prix', 
+                        multi=True, 
+                        value=prix_quartier,
+                        options=prix_quartier,
+                    )
+                ]),
+
+                dbc.CardBody([
+                    dcc.Graph(id='pie_prix', figure={})
+                ]),
+            
+            ],className='card border-info mb-3'),
 
         ], width = 5, )
         
@@ -91,25 +119,9 @@ app.layout= dbc.Container([    #dbc.Container mieux que html.div pour bootstrap
  #-------------- FOOTER --------------#    
 ],fluid = True) #permet d'étirer à la largeur de la page web
 
-
-
-# width={'size':5, 'offset':0, 'order':2}, #offset decale de 2 colonnes à gauche
-# no_gutters= False,  l'espace entre les 2 éléments / True = pas d'espace ; False = espace
-# width={'size':5, 'order':1},), #premières 5 colonnes à partir de la gauche, order permet de choisir l'ordre des éléments dans la ligne
-# ),
-# ], className='card border-light mb-3', style={"margin" : "6px"} ),
-            
+        
 
 # ------- CALLBACK -------------------------------------------------------
-
-# @app.callback(
-#     Output('line-fig', 'figure'),
-#     Input('dropdown', 'value')
-# )
-# def update_graph(stock_slctd):
-#     dff = wallet[wallet['Name']==stock_slctd]
-#     figln = px.bar(dff, x='Name', y='Balance')
-#     return figln
 
 
 # pie quartier
@@ -119,58 +131,29 @@ app.layout= dbc.Container([    #dbc.Container mieux que html.div pour bootstrap
 )
 def update_graph(value_slctd):
     df1_slct = df_quartier[df_quartier['Quartier'].isin(value_slctd)]
-    figln2 = px.bar(df1_slct, x='Quartier', y='Valeur_Quartier')
+    figln2 = px.bar(df1_slct, x='Quartier', y='Valeur_Quartier', color='Quartier')
     return figln2
 
-
-# # Barchart - Balance - Crypto
-# @app.callback(
-#     Output('bar_chart', 'figure'),
-#     Input('checklist_bar', 'value')
-# )
-# def update_graph(value_slctd):
-#     wallet_slctd = wallet[wallet['Name'].isin(value_slctd)]
-#     fighist = px.histogram(wallet_slctd, x='Name', y='Balance', color="Name",  hover_name='Name')
-#     return fighist
-
-# #Add wallet
+@app.callback(
+    Output('pie', 'figure'),
+    Input('dropdown_type', 'value')
+)
+def update_graph(value_slctd):
+    df1_slct = df_type[df_type['Type'].isin(value_slctd)]
+    figln3 = px.bar(df1_slct, x='Type', y='Valeur_Type', color='Type')
+    return figln3
 
 
+@app.callback(
+    Output('pie_prix', 'figure'),
+    Input('dropdown_prix', 'value')
+)
+def update_graph(value_slctd):
+    df1_slct = df_prix[df_prix['Prix'].isin(value_slctd)]
+    figln4 = px.pie(df1_slct, values='Valeur_Prix', names='Prix', hole=.3)
+    #figln4 = px.bar(df1_slct, x='Prix', y='Valeur_Prix', color='Prix')
+    return figln4
 
-# # details_crypto
-# @app.callback(
-#     Output("details_output", "children"),
-#     Input('dropdown_details', 'value')
-# )
-# def update_output_details(value_slctd):
-#     dff = wallet[wallet['Name']==value_slctd]
-#     balance = "{}".format(dff['Balance']).split('\n',1)[0].split('    ',1)[1]
-#     holdings = "{}".format(dff['Holdings (en USD)']).split('\n',1)[0].split('    ',1)[1]
-#     profit = "{}".format(dff['Profit/Loss']).split('\n',1)[0].split('    ',1)[1]
-#     return "Balance : ",balance,"\n"," Holdings (en USD) : ",holdings, "\n", "Profit/Loss : " , profit
-
-# #temps_reel_output
-# @app.callback(
-#     Output("temps_reel_output","children"),
-#     Input("dropdown_temps_reel","value")
-# )
-
-# def update_output_temps_reel(value_slctd):
-#     price_tps = price(value_slctd)
-#     return "Price : {}".format(price_tps[0])
-
-# #temps_reel_couleur   
-# @app.callback(
-#     Output("temps_reel_couleur","children"),
-#     Input("dropdown_temps_reel","value")
-# )
-
-# def update_output_temps_couleurs(value_slctd):
-#     price_tps = price(value_slctd)
-#     return "Price : {}".format(price_tps[0])
-# ------- RUN APP --------------------------------------------------------
-# def launch_app():
-#     return app.run_server(debug=True)  
 
 if __name__=='__main__':
     app.run_server(debug=True)   

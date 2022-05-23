@@ -61,9 +61,9 @@ def analysis_type(df):
     for i in range(len(df['type'].value_counts())-1):
         a.append(df['type'].value_counts()[i])
         b.append(df['type'].value_counts().index[i])
-    df_quartier = pd.DataFrame({"Type" : b, 
+    df_type = pd.DataFrame({"Type" : b, 
                                 "Valeur_Type": a})
-    return(df_quartier)
+    return(df_type)
 
 
 def analysis_prix(df):
