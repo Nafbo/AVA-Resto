@@ -45,16 +45,36 @@ def set_up(df):
 
     
 def analysis_quartier(df):
-    return(df['quartier'][(df['quartier'] != '69005') & (df['quartier'] != 'None')].value_counts().plot(kind='pie'))
+    a = []
+    b = []
+    for i in range(len(df['quartier'].value_counts())-1):
+        a.append(df['quartier'].value_counts()[i])
+        b.append(df['quartier'].value_counts().index[i])
+    df_quartier = pd.DataFrame({"Quartier" : a, 
+                                "Valeur_Quartier": b})
+    return(df_quartier)
 
 
 def analysis_type(df):
-    return(df['type'].value_counts().plot(kind='pie'))
+    a = []
+    b = []
+    for i in range(len(df['type'].value_counts())-1):
+        a.append(df['type'].value_counts()[i])
+        b.append(df['type'].value_counts().index[i])
+    df_quartier = pd.DataFrame({"Type" : a, 
+                                "Valeur_Type": b})
+    return(df_quartier)
 
 
 def analysis_prix(df):
-    df2 = df.drop(df.loc[df['prix']=='None'].index, inplace=True)
-    return(df2['prix'].value_counts().plot(kind='pie'))
+    a = []
+    b = []
+    for i in range(len(df['prix'].value_counts())-1):
+        a.append(df['prix'].value_counts()[i])
+        b.append(df['prix'].value_counts().index[i])
+    df_prix = pd.DataFrame({"Prix" : a, 
+                                "Valeur_Prix": b})
+    return(df_prix)
 
 
 def avis_quartier(df):
