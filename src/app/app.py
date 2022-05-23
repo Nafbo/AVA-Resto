@@ -22,7 +22,7 @@ df1 = set_up(df)
 df_quartier = analysis_quartier(df)
 print(df_quartier)
 
-liste_quartier = df_quartier['Valeur_Quartier'].sort_values().unique()
+liste_quartier = df_quartier['Quartier'].sort_values().unique()
 
 
 # ------- APP -----------------------------------------------------------
@@ -118,8 +118,7 @@ app.layout= dbc.Container([    #dbc.Container mieux que html.div pour bootstrap
     Input('dropdown_quartier', 'value')
 )
 def update_graph(value_slctd):
-    
-    df1_slct = df_quartier[df_quartier['Valeur_Quartier'].isin(value_slctd)]
+    df1_slct = df_quartier[df_quartier['Quartier'].isin(value_slctd)]
     figln2 = px.bar(df1_slct, x='Quartier', y='Valeur_Quartier')
     return figln2
 
