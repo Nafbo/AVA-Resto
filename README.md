@@ -7,4 +7,5 @@
 ## Running the dash appliation
 <p>Install the <code>requirements.txt</code> to have all the necessary libraries to launch our application</p>
 <pre><code>pip install -r requirements.txt</code></pre>
-<p>Launch the <code>main.py</code> file to run the dash application locally on your web browser</p>
+<p>Before launching the application, check that you have the file <code>LePetitFute.csv</code> in your analysis folder in src</p>
+<p>Know launch the <code>main.py</code> file to run the dash application locally on your web browser</p>
