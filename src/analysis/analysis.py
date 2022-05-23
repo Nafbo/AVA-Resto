@@ -43,7 +43,15 @@ def set_up(df):
 
     
 def analysis_quartier(df):
-    return(df['quartier'][(df['quartier'] != '69005') & (df['quartier'] != 'None')].value_counts().plot(kind='pie'))
+    nbre_par_quartier = []
+    a=df['quartier'].value_counts()
+    c=df['quartier']
+    b=[]
+    for i in a:
+        b.append(i)
+    df_quartier = pd.DataFrame(list(zip(c,b)), columns = ['Quartier','Nbre_Resto_Quartiers'])
+    
+    return(df_quartier[(df_quartier['Quartier'] != '69005') & (df_quartier['Quartier'] != 'None')].plot(kind='pie'))
 
 
 def analysis_type(df):
