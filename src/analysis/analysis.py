@@ -39,6 +39,8 @@ def set_up(df):
         changement_avis.append(float(test))
     df = df.assign(AVIS_VALEUR = changement_avis)
     
+    df["quartier"]= df.quartier.str.replace("75116","75016", regex=True)
+    
     return(df)
 
     
