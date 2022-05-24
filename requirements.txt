@@ -3,3 +3,11 @@ bs4
 pandas
 numpy
 re
+tracemalloc
+dash
+dash.dependencies
+dash_bootstrap_components
+plotly.express
+pandas
+base64
+plotly.graph_objs
