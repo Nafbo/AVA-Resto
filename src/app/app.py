@@ -75,7 +75,7 @@ app.layout= dbc.Container([    #dbc.Container mieux que html.div pour bootstrap
  #-------------- HEADER --------------#
 
     dbc.Row([   #divise la page en 3 ligne : le titres / dropdown / derniers bar chart
-        html.H1("Quel est le meilleur restaurant de Paris")], 
+        html.H1("Quel est le meilleur restaurant de Paris ?")], 
         className="text-center mb-3"), 
 
     dbc.Row([
@@ -200,7 +200,7 @@ app.layout= dbc.Container([    #dbc.Container mieux que html.div pour bootstrap
             dbc.Card([
                 dbc.CardHeader([
                         
-                    html.H4("Meilleur type de restaurant par type"),
+                    html.H4("Meilleur type de restaurant par quartier"),
                     dbc.CardBody([
                         html.Div([
                             dash_table.DataTable(
@@ -265,7 +265,7 @@ def update_graph(value):
     for i in df_best_quartier_type.columns:
         if i == value:
             for y in range(3):
-                a.append("{}".format(df_best_quartier_type[i][y]))
+                a.append(" {} ".format(df_best_quartier_type[i][y]))
     return a
 
 
