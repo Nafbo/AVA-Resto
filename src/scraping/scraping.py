@@ -5,12 +5,28 @@ import numpy as np
 import re
 
 def get_html_from_link(url):
+    '''Return html from a link
+    
+    Parameters:
+    ulr(string): website
+    
+    Returns:
+    soup(string): string list
+    '''
     req = requests.get(url)
     soup = BeautifulSoup(req.text, "html.parser")
     return(soup)
 
 
 def get_database(soup):
+    '''Scrape of the website
+    
+    Parameters:
+    soup(string): string list
+    
+    Returns:
+    all(Dataframe): dataframe with all the site information that we need
+    '''
     all_temp_avis = []
     all_temp_prix = []
     all_temp_type = []
