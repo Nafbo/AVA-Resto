@@ -202,7 +202,7 @@ app.layout= dbc.Container([    #dbc.Container mieux que html.div pour bootstrap
             dbc.Card([
                 dbc.CardHeader([
                         
-                    html.H4("Meilleur type de restaurant par type"),
+                    html.H4("Meilleur type de restaurant par quartier"),
                     dbc.CardBody([
                         html.Div([
                             dash_table.DataTable(
