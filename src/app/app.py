@@ -1,7 +1,9 @@
 from tracemalloc import stop
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+# import dash_core_components as dcc
+from dash import dcc
+# import dash_html_components as html
+from dash import html
 from dash.dependencies import Output, Input
 import dash_bootstrap_components as dbc
 import plotly.express as px
@@ -75,7 +77,7 @@ app.layout= dbc.Container([    #dbc.Container mieux que html.div pour bootstrap
  #-------------- HEADER --------------#
 
     dbc.Row([   #divise la page en 3 ligne : le titres / dropdown / derniers bar chart
-        html.H1("Quel est le meilleur restaurant de Paris")], 
+        html.H1("Quel est le meilleur restaurant de Paris ?")], 
         className="text-center mb-3"), 
 
     dbc.Row([
@@ -265,7 +267,7 @@ def update_graph(value):
     for i in df_best_quartier_type.columns:
         if i == value:
             for y in range(3):
-                a.append("{}".format(df_best_quartier_type[i][y]))
+                a.append(" {} ".format(df_best_quartier_type[i][y]))
     return a
 
 
@@ -277,10 +279,11 @@ def update_graph(value):
 #     return f'{df_avis_prix}'
 
 
-if __name__=='__main__':
-    app.run_server(debug=True)   
+# if __name__=='__main__':
+#     app.run_server(debug=True)   
 
-
+def launch_app():
+    return app.run_server(debug=True) 
 
 
 
